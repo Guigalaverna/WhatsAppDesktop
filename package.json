@@ -1,0 +1,15 @@
+{
+  "name": "whatsapp-desktop",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "repository": "https://github.com/Guigalaverna/WhatsAppDesktop.git",
+  "author": "Guigalaverna <guigalaverna@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc --outDir ./build src/index.ts && electron ."
+  },
+  "devDependencies": {
+    "electron": "^11.1.0",
+    "typescript": "^4.1.3"
+  }
+}
