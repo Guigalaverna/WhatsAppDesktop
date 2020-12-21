@@ -1,32 +1,21 @@
-import { app, BrowserWindow } from 'electron'
+import { app } from 'electron'
 
-const userAgent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.131 Safari/537.36';
+import createWindow from './includes/window'
+import createTrayIconFor from './includes/tray'
 
-const createWindow = () => {
-  const win = new BrowserWindow({
-    width: 1200,
-    height: 720,
-    webPreferences: {
-      nodeIntegration: false
-    }
-  })
+let tray
+let win
 
-  win.setMenuBarVisibility(false)
+const isFirstInstance = app.requestSingleInstanceLock()
 
-  win.loadURL('https://web.whatsapp.com', { userAgent })
-
+if (!isFirstInstance) {
+  app.quit()
 }
 
-app.whenReady().then(createWindow)
+const startApp = () => {
+  win = createWindow()
+  tray = createTrayIconFor(win, app);
+}
 
-app.on('window-all-closed', () => {
-  if (process.platform !== "darwin") {
-    app.quit()
-  }
-})
-
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
-  }
-})
+app.whenReady().then(startApp)
+app.on('window-all-closed', () => app.quit())
